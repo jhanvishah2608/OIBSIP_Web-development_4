@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login Authentication</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f0f4f8;
+      font-family: Georgia, serif;
+      color: #333;
+    }
+
+    header {
+      background-color: #1a1a2e;
+      color: white;
+      text-align: center;
+      padding: 25px 20px;
+    }
+
+    header h1 {
+      font-size: 30px;
+      color: #e94560;
+    }
+
+    header p {
+      color: #a0a0c0;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .card {
+      background-color: #ffffff;
+      max-width: 420px;
+      margin: 50px auto;
+      border-radius: 12px;
+      padding: 35px 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+    }
+
+    .card h2 {
+      font-size: 24px;
+      color: #1a1a2e;
+      margin-bottom: 5px;
+    }
+
+    .card p.subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      font-family: Georgia, serif;
+    }
+
+    .form-group input:focus {
+      border-color: #e94560;
+    }
+
+   .btn-main {
+      width: 100%;
+      background-color: #e94560;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 13px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 5px;
+      font-family: Georgia, serif;
+    }
+
+    .btn-main:hover {
+      background-color: #c73652;
+    }
+
+    .switch-text {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .switch-text a {
+      color: #e94560;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .switch-text a:hover {
+      text-decoration: underline;
+    }
+
+    .error-msg {
+      background-color: #ffe0e5;
+      color: #c0392b;
+      border: 1px solid #f5b7b1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .success-msg {
+      background-color: #e0f8e9;
+      color: #1e8449;
+      border: 1px solid #a9dfbf;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .dashboard {
+      max-width: 650px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-box {
+      background-color: #1a1a2e;
+      color: white;
+      border-radius: 12px;
+      padding: 35px 40px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .welcome-box h2 {
+      font-size: 28px;
+      color: #e94560;
+      margin-bottom: 8px;
+    }
+
+    .welcome-box p {
+      color: #a0a0c0;
+      font-size: 15px;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .info-card {
+      flex: 1;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .info-card p {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .info-card h3 {
+      font-size: 20px;
+      color: #1a1a2e;
+    }
+
+    .secured-box {
+      background-color: #ffffff;
+      border-left: 5px solid #28a745;
+      border-radius: 10px;
+      padding: 25px 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .secured-box h3 {
+      color: #28a745;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .secured-box p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .btn-logout {
+      background-color: #0f3460;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 25px;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: Georgia, serif;
+    }
+
+    .btn-logout:hover {
+      background-color: #1a4a80;
+    }
+
+    .strength-bar {
+      height: 5px;
+      border-radius: 5px;
+      margin-top: 6px;
+      background-color: #eee;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 5px;
+      transition: width 0.3s;
+    }
+
+    .strength-label {
+      font-size: 12px;
+      margin-top: 4px;
+      color: #aaa;
+    }
+
+    footer {
+      background-color: #1a1a2e;
+      color: #a0a0c0;
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      margin-top: 30px;
+    }
+
+    footer span {
+      color: #e94560;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Login Authentication System</h1>
+    <p>Register, Login and Access Secured Page</p>
+  </header>
+
+  <div class="page active" id="registerPage">
+    <div class="card">
+      <h2>Create Account</h2>
+      <p class="subtitle">Register to get started</p>
+
+      <div class="error-msg" id="regError"></div>
+      <div class="success-msg" id="regSuccess"></div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your full name" />
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="regEmail" placeholder="Enter your email" />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPassword"
+          placeholder="Enter password" oninput="checkStrength()" />
+        <div class="strength-bar">
+          <div class="strength-fill" id="strengthFill"></div>
+        </div>
+        <div class="strength-label" id="strengthLabel"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="regConfirm" placeholder="Repeat password" />
+      </div>
+
+      <button class="btn-main" onclick="register()">Register</button>
+
+      <div class="switch-text">
+        Already have an account?
+        <a onclick="showPage('loginPage')">Login here</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="loginPage">
+    <div class="card">
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Login to your account</p>
+
+      <div class="error-msg" id="loginError"></div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="Enter your email" />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password" />
+      </div>
+
+      <button class="btn-main" onclick="login()">Login</button>
+
+      <div class="switch-text">
+        Don't have an account?
+        <a onclick="showPage('registerPage')">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="dashboardPage">
+    <div class="dashboard">
+
+      <div class="welcome-box">
+        <h2>Welcome, <span id="dashName"></span>!</h2>
+        <p>You have successfully logged in to your account.</p>
+      </div>
+
+      <div class="info-row">
+        <div class="info-card">
+          <p>Logged in as</p>
+          <h3 id="dashEmail" style="font-size:15px; color:#e94560;"></h3>
+        </div>
+        <div class="info-card">
+          <p>Login Time</p>
+          <h3 id="dashTime" style="font-size:15px;"></h3>
+        </div>
+        <div class="info-card">
+          <p>Status</p>
+          <h3 style="color:#28a745;">Active</h3>
+        </div>
+      </div>
+
+      <div class="secured-box">
+        <h3>Secured Page Content</h3>
+        <p>
+          This is your secured dashboard. Only logged in users can see this page.
+          Your personal data, settings, and private information are safely stored here.
+          You can manage your account and access all features from this page.
+        </p>
+      </div>
+
+      <button class="btn-logout" onclick="logout()">Logout</button>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>Login Authentication System — Built with <span>❤</span></p>
+  </footer>
+
+  <script>
+
+    let users = [];
+    let loggedInUser = null;
+
+    function showPage(pageId) {
+      const allPages = document.querySelectorAll('.page');
+      allPages.forEach(function(page) {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function showError(id, message) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.style.display = 'block';
+    }
+
+    function hideError(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function showSuccess(id, message) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.style.display = 'block';
+    }
+
+    function checkStrength() {
+      const password = document.getElementById('regPassword').value;
+      const fill = document.getElementById('strengthFill');
+      const label = document.getElementById('strengthLabel');
+
+      if (password.length === 0) {
+        fill.style.width = '0%';
+        label.textContent = '';
+      } else if (password.length < 4) {
+        fill.style.width = '25%';
+        fill.style.backgroundColor = '#e94560';
+        label.textContent = 'Weak';
+        label.style.color = '#e94560';
+      } else if (password.length < 7) {
+        fill.style.width = '55%';
+        fill.style.backgroundColor = '#f0c040';
+        label.textContent = 'Medium';
+        label.style.color = '#f0c040';
+      } else {
+        fill.style.width = '100%';
+        fill.style.backgroundColor = '#28a745';
+        label.textContent = 'Strong';
+        label.style.color = '#28a745';
+      }
+    }
+
+    function register() {
+      const name     = document.getElementById('regName').value.trim();
+      const email    = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirm  = document.getElementById('regConfirm').value;
+
+      hideError('regError');
+      hideError('regSuccess');
+
+      if (name === '' || email === '' || password === '' || confirm === '') {
+        showError('regError', 'Please fill in all fields.');
+        return;
+      }
+
+      if (!email.includes('@') || !email.includes('.')) {
+        showError('regError', 'Please enter a valid email address.');
+        return;
+      }
+
+      if (password !== confirm) {
+        showError('regError', 'Passwords do not match.');
+        return;
+      }
+
+      if (password.length < 4) {
+        showError('regError', 'Password must be at least 4 characters.');
+        return;
+      }
+
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].email === email) {
+          showError('regError', 'This email is already registered.');
+          return;
+        }
+      }
+
+      users.push({ name: name, email: email, password: password });
+      showSuccess('regSuccess', 'Account created successfully! You can now login.');
+
+      document.getElementById('regName').value = '';
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regPassword').value = '';
+      document.getElementById('regConfirm').value = '';
+      document.getElementById('strengthFill').style.width = '0%';
+      document.getElementById('strengthLabel').textContent = '';
+
+      setTimeout(function() {
+        showPage('loginPage');
+      }, 1500);
+    }
+
+    function login() {
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      hideError('loginError');
+
+      if (email === '' || password === '') {
+        showError('loginError', 'Please enter email and password.');
+        return;
+      }
+
+      let found = false;
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].email === email && users[i].password === password) {
+          found = true;
+          loggedInUser = users[i];
+          break;
+        }
+      }
+
+      if (!found) {
+        showError('loginError', 'Wrong email or password. Please try again.');
+        return;
+      }
+
+      document.getElementById('dashName').textContent = loggedInUser.name;
+      document.getElementById('dashEmail').textContent = loggedInUser.email;
+
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('dashTime').textContent = time;
+
+      showPage('dashboardPage');
+    }
+
+    function logout() {
+      loggedInUser = null;
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      showPage('loginPage');
+    }
+
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const active = document.querySelector('.page.active').id;
+        if (active === 'loginPage') login();
+        if (active === 'registerPage') register();
+      }
+    });
+
+  </script>
+
+</body>
+</html>
